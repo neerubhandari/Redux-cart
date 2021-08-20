@@ -20,7 +20,7 @@ const Cart = ({ cart }) => {
 
     setTotalItems(items);
     setTotalPrice(price);
-  }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
+  }, [cart]);
 
   return (
     <div className={styles.cart}>

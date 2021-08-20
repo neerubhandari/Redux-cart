@@ -20,7 +20,7 @@ const Product = ( {product , addToCart,loadCurrentItem}) => {
         <p className={styles.details__title}>{product.title}</p>
         <p className={styles.details__desc}>{product.description}</p>
         <p className={styles.details__price}>$ {product.price}</p>
-        <p>quantity</p>
+       
       </div>
      
       <div className={styles.product__buttons}>

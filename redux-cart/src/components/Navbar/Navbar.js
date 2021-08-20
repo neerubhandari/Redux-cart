@@ -4,8 +4,17 @@ import styles from "./Navbar.module.css";
 
 import { connect } from "react-redux";
 
-const Navbar = () => {
- 
+const Navbar = ({cart}) => {
+ const [cartCount,setCartCount]=useState(0)
+
+ useEffect(() => {
+   let count=0
+   cart.forEach((item) => {
+     count+=item.qty;
+   });
+   setCartCount(count);
+ }, [cart])
+
   return (
     <div className={styles.navbar}>
       <Link to="/">
@@ -18,12 +27,16 @@ const Navbar = () => {
             src="https://image.flaticon.com/icons/svg/102/102276.svg"
             alt="shopping cart"
           />
-          <div className={styles.cart__counter}>c</div>
+          <div className={styles.cart__counter}>{cartCount}</div>
         </div>
       </Link>
     </div>
   );
 };
+const mapStateToPops=(state)=>{
+  return{
+    cart:state.shopCart.cart
+  }
+}
 
-
-export default Navbar;
+export default connect(mapStateToPops)(Navbar);

@@ -6,7 +6,7 @@ const INITIAL_STATE={
             description: "black in color",
             price: "2500",
             img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-            quantity: 1,
+         
           },
           {
             id: 2,
@@ -14,7 +14,7 @@ const INITIAL_STATE={
             description: "white in color",
             price: "2300",
             img: "https://images.pexels.com/photos/47261/pexels-photo-47261.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-            quantity: 1,
+         
           },
           {
             id: 3,
@@ -22,7 +22,7 @@ const INITIAL_STATE={
             description: "black in color",
             price: "3500",
             img: "https://images-na.ssl-images-amazon.com/images/I/71A9Vo1BatL._SL1500_.jpg",
-            quantity: 1,
+          
           },
           {
             id: 4,
@@ -30,7 +30,7 @@ const INITIAL_STATE={
             description: "Best mobile ever",
             price: "90500",
             img: "https://images-na.ssl-images-amazon.com/images/I/71hIfcIPyxS._SL1500_.jpg",
-            quantity: 1,
+      
           },
           {
             id: 5,
@@ -38,7 +38,7 @@ const INITIAL_STATE={
             description: "black in color",
             price: "2500",
             img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-            quantity: 1,
+            
           },
           {
             id: 6,
@@ -46,7 +46,7 @@ const INITIAL_STATE={
             description: "black in color",
             price: "3500",
             img: "https://images-na.ssl-images-amazon.com/images/I/71A9Vo1BatL._SL1500_.jpg",
-            quantity: 1,
+           
           },
           {
             id: 7,
@@ -54,7 +54,7 @@ const INITIAL_STATE={
             description: "black in color",
             price: "2500",
             img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-            quantity: 1,
+          
           },
           {
             id: 8,
@@ -62,7 +62,7 @@ const INITIAL_STATE={
             description: "Best mobile ever",
             price: "90500",
             img: "https://images-na.ssl-images-amazon.com/images/I/71hIfcIPyxS._SL1500_.jpg",
-            quantity: 1,
+          
           },
           {
             id: 9,
@@ -70,7 +70,7 @@ const INITIAL_STATE={
             description: "black in color",
             price: "2500",
             img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-            quantity: 1,
+            
           },
     ],
     cart:[],
@@ -80,12 +80,23 @@ const INITIAL_STATE={
 const rootReducer=(state=INITIAL_STATE,action)=>{
     switch(action.type){
         case "ADD_TO_CART":
+          //get items from products collection
             const item=state.products.find(
                 (product)=>product.id==action.payload.id
             )
+            //check if is in cart already or not
+            const inCart=state.cart.find((item)=>
+            item.id===action.payload.id? true : false
+            )
             return{
              ...state,
-             cart:[...state.cart, { ...item, qty: 1 }]
+             cart:inCart?
+             state.cart.map((item)=>
+             item.id===action.payload.id
+             ?{...item,qty:item.qty+1}
+             :item
+             ):
+             [...state.cart, { ...item, qty: 1 }]
             }
 
         case "LOAD_CURRENT_ITEM":
@@ -93,6 +104,14 @@ const rootReducer=(state=INITIAL_STATE,action)=>{
                 ...state,
                 currentItem: action.payload
             }
+
+        case "REMOVE_FROM_CART":
+          const items=state.cart.filter((product)=>
+             product.id!=action.payload.id
+          )
+          return{
+            ...state,cart:items
+          }
         default:
             return state;
     }

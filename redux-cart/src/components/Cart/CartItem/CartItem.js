@@ -1,21 +1,17 @@
 import React, { useState } from "react";
 import styles from "./CartItem.module.css";
 
+import { connect } from "react-redux";
+import { removeFromCart } from "../../../redux/actions";
 
-
-const CartItem = ({ item, adjustQty, removeFromCart }) => {
+const CartItem = ({ item,removeFromCart }) => {
   const [input, setInput] = useState(item.qty);
-
-  const onChangeHandler = (e) => {
-    setInput(e.target.value);
-    adjustQty(item.id, e.target.value);
-  };
 
   return (
     <div className={styles.cartItem}>
       <img
         className={styles.cartItem__image}
-        src={item.image}
+        src={item.img}
         alt={item.title}
       />
       <div className={styles.cartItem__details}>
@@ -32,11 +28,11 @@ const CartItem = ({ item, adjustQty, removeFromCart }) => {
             id="qty"
             name="qty"
             value={input}
-            onChange={onChangeHandler}
+          
           />
         </div>
         <button
-          onClick={() => removeFromCart(item.id)}
+         onClick={()=>removeFromCart(item.id)}
           className={styles.actions__deleteItemBtn}
         >
           <img
@@ -49,5 +45,9 @@ const CartItem = ({ item, adjustQty, removeFromCart }) => {
   );
 };
 
-
-export default CartItem;
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    removeFromCart:(id)=>dispatch(removeFromCart(id))
+  }
+}
+export default connect(null,mapDispatchToProps)(CartItem);
